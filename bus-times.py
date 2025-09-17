@@ -1,3 +1,6 @@
+# Cailan White 2025
+# Simple script to pull latest bus times from tfe bus times api
+
 import requests 
 import json
 from datetime import datetime, timedelta
