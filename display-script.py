@@ -7,6 +7,7 @@ import bustimes
 import argparse
 from config import weather_api_key, weather_post_code, stop_number, services
 
+# drawing boxes
 def draw_box(win, title, lines):
     win.box()
     max_y, max_x = win.getmaxyx()
@@ -48,11 +49,15 @@ def dashboard(stdscr):
     formatted_bus_lines = format_bus_data(bus_lines)
 
     stdscr.refresh()
+
+    # divider
     divider_x = width
     for y in range(height*3):
         stdscr.addch(y, divider_x, curses.ACS_CKBOARD)
     draw_box(weather_win, "Weather", weather_lines)
     draw_box(bus_win, "Bus Times", formatted_bus_lines)
+
+    # exit
     while True:
         key = stdscr.getch()
         if key == ord('q'):

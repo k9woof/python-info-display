@@ -7,8 +7,8 @@ Morning information to run off of an rpi at login
 -timetable.py
 -daily-verse.py
 
-These are then displayed in a wonderful terminal GUI in display-script.py
-Display-script.py is designed to be ran at login in an RPI's terminal (for example on a Pi Zero 2 W with Raspbian OS Lite)
+These are then displayed in a terminal GUI in display-script.py
+display-script.py is designed to be ran at login in an RPI's terminal (for example on a Pi Zero 2 W with Raspbian OS Lite)
 
 How to's:
 
