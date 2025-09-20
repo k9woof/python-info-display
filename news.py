@@ -3,30 +3,44 @@
 
 import requests
 import json
+import argparse
+from newsapi import NewsApiClient
 
-def get_stocks_data(api_key):
-    url = ''
-    response = requests.get(url)
-
-    if response.status_code == 200:
-        stocks = response.json()
-        return stocks
+def get_news_data(api_key):
+    client = NewsApiClient(api_key)
+    if client:
+        news_data = client.get_top_headlines(
+            sources='bbc-news'
+        )
+        return news_data
     else:
-        print(f"Error: {response.status_code}")
+        print("Polygon connection failed")
 
-def get_stocks_lines():
-    print("hello")
+def get_news_lines(data):
+    news_lines = []
+    articles = data['articles']
+    for article in articles:
+        news_lines.append(article['title'])
+    return news_lines
 
-def print_stocks():
-    print("Hello")
+def print_news(data):
+    articles = data['articles']
+    print("Top BBC-News headlines")
+    for article in articles:
+        print(article['title'])
 
 def main():
-    stocks = get_stocks_data()
+# stocks args
+    parser = argparse.ArgumentParser(description="news")
+    parser.add_argument('api_key', type=str, help='api_key')
+    args = parser.parse_args()
 
-    if stocks:
-        print_stocks(stocks)
+    data = get_news_data(args.api_key)
+
+    if data:
+        print_news(data)
     else:
-        print("Error getting data from the news feed")
+        print("Error getting data from the NewsApi API")
 
 if __name__ == '__main__':
     main()

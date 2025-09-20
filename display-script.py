@@ -1,5 +1,5 @@
 # Cailan White
-# Terminal GUI to run at login
+# Terminal GUI to run at login/run
 
 import curses
 import weather
@@ -9,7 +9,7 @@ import stocks
 import news
 import systeminfo
 import textwrap
-from config import weather_api_key, weather_post_code, stop_number, services, stocks_api_key
+from config import weather_api_key, weather_post_code, stop_number, services, stocks_api_key, news_api_key
 
 # drawing boxes
 def draw_box(win, title, lines):
@@ -34,6 +34,7 @@ def dashboard(stdscr):
     bus_stop_number = stop_number
     bus_routes = services
     s_api_key = stocks_api_key
+    n_api_key = news_api_key
 
     curses.curs_set(0)
     stdscr.clear()
@@ -67,7 +68,7 @@ def dashboard(stdscr):
 
     # news box
     news_win = curses.newwin(height, 0, width-5, width+5)
-    news_data = news.get_news_data(s_api_key)
+    news_data = news.get_news_data(n_api_key)
     news_lines = news.get_news_lines(news_data)
 
     # systeminfo box
