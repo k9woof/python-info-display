@@ -5,9 +5,11 @@ import curses
 import weather
 import bustimes
 import dailyverse
-import timetable
+import stocks
+import news
+import systeminfo
 import textwrap
-from config import weather_api_key, weather_post_code, stop_number, services
+from config import weather_api_key, weather_post_code, stop_number, services, stocks_api_key
 
 # drawing boxes
 def draw_box(win, title, lines):
@@ -25,11 +27,13 @@ def draw_box(win, title, lines):
                 win.addstr(i + 1, 2, line)
     win.refresh()
 
+# gui
 def dashboard(stdscr):
     w_api_key = weather_api_key
     postcode = weather_post_code
     bus_stop_number = stop_number
     bus_routes = services
+    s_api_key = stocks_api_key
 
     curses.curs_set(0)
     stdscr.clear()
@@ -56,10 +60,20 @@ def dashboard(stdscr):
     bible_verse = dailyverse.get_bible_verse()
     bible_lines = dailyverse.get_bible_lines(bible_verse)
 
-    # timetable box
-    timetable_win = curses.newwin(height, width-5, width+5)
-    timetable_data = timetable.get_timetable_data()
-    timetable_lines = timetable.get_timetable_lines(timetable_data)
+    # stocks box
+    stocks_win = curses.newwin(height, 0, width-5, width+5)
+    stocks_data = stocks.get_stocks_data(s_api_key)
+    stocks_lines = stocks.get_stocks_lines(stocks_data)
+
+    # news box
+    news_win = curses.newwin(height, 0, width-5, width+5)
+    news_data = news.get_news_data(s_api_key)
+    news_lines = news.get_news_lines(news_data)
+
+    # systeminfo box
+    system_info_win = curses.newwin(height, 0, width-5, width+5)
+    system_info_data = systeminfo.get_system_info()
+    system_info_lines = systeminfo.get_system_info_lines(system_info_data)
 
     stdscr.addstr(height*3 ,0, "Press q to exit")
     stdscr.refresh()
@@ -68,10 +82,14 @@ def dashboard(stdscr):
     divider_x = width
     for y in range(height*3):
         stdscr.addch(y, divider_x, curses.ACS_CKBOARD)
+
+    # boxes
     draw_box(weather_win, "Weather", weather_lines)
     draw_box(bus_win, "Bus Times", bus_lines)
     draw_box(bible_win, "Bible-Verse", bible_lines)
-    draw_box(timetable_win, "Timetable", timetable_lines)
+    draw_box(stocks_win, "Stocks", stocks_lines)
+    draw_box(news_win, "News", news_lines)
+    draw_box(system_info_win, "System Info", system_info_lines)
 
     # exit
     while True:

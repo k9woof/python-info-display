@@ -33,7 +33,7 @@ def main():
     if daily_verse:
         print_bible_verse(daily_verse)
     else:
-        print("Error getting data from the weather API")
+        print("Error getting data from the Bible verse API")
 
 if __name__ == '__main__':
     main()
