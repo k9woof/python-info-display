@@ -76,6 +76,10 @@ def dashboard(stdscr):
     system_info_data = systeminfo.get_system_info()
     system_info_lines = systeminfo.get_system_info_lines(system_info_data)
 
+    # favourite bible quote
+    fav_bible_quote_win = curses.newwin(height, 0, width, width)
+    fav_bible_quote = "Hear, O Israel: the LORD our God is one LORD: and thou shalt love the LORD thy God with all thine heart, and with all thy soul, and with all thy might."
+
     stdscr.addstr(height*3 ,0, "Press q to exit")
     stdscr.refresh()
 
@@ -93,6 +97,7 @@ def dashboard(stdscr):
     draw_box(stocks_win, "Stocks", stocks_lines)
     draw_box(news_win, "News", news_lines)
     draw_box(system_info_win, "System Info", system_info_lines)
+    draw_box(fav_bible_quote_win, "Remember this:", fav_bible_quote)
 
     # exit
     while True:
