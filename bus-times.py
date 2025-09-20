@@ -2,21 +2,19 @@
 # Simple script to pull latest bus times from tfe bus times api
 
 import requests 
+import argparse
 import json
 from datetime import datetime, timedelta
 
-# St Michaels Church
-stop = 36236498
-
-url = f'https://tfe-opendata.com/api/v1/live_bus_times/{stop}'
-
-response = requests.get(url)
-
 #testing connection
-if response.status_code == 200:
-    data = response.json()
-else:
-    print(f"Error: {response.status_code}")
+def testConnection(stop):
+    url = f'https://tfe-opendata.com/api/v1/live_bus_times/{stop}'
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        return data
+    else:
+        print(f"Error: {response.status_code}")
 
 #printing bus data
 def printData(routeNumbers, data): 
@@ -35,11 +33,26 @@ def printData(routeNumbers, data):
                 departure_time_unix = departure['departureTimeUnix']
                 departure_time = datetime.fromtimestamp(departure_time_unix)
                 actual_time = departure_time - timedelta(hours = 2)
-                formatted_time= actual_time.strftime('%H:%M:%S')
+                formatted_time= actual_time.strftime('%H:%M')
                 service_rows.append((route['routeName'], departure['destination'], formatted_time))
 
     service_rows.sort(key=lambda x: x[2]) 
     for service in service_rows:
         print(f"{service[0]:<10}{service[1]:<20}{service[2]:<15}")
 
-printData(['34', '35'], data)
+def main():
+
+    # bus stop & services args
+    parser = argparse.ArgumentParser(description="live bus times")
+    parser.add_argument('stop', type=int, help='bus stop')
+    parser.add_argument('services', nargs='+', help='services')
+    args = parser.parse_args()
+    data = testConnection(args.stop)
+
+    if data:
+        printData(args.services, data)
+    else:
+        print("Error getting data from TFE API")
+
+if __name__ == "__main__":
+    main()
