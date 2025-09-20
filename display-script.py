@@ -17,9 +17,6 @@ def draw_box(win, title, lines):
             win.addstr(i + 1, 2, line[:max_x - 4])
     win.refresh()
 
-def format_bus_data(data):
-    return [f"{route:<10} {destination:<20} {time:<15}" for route, destination, time in data]
-
 def dashboard(stdscr):
     w_api_key = weather_api_key
     postcode = weather_post_code
@@ -46,7 +43,6 @@ def dashboard(stdscr):
     bus_data = bustimes.testConnection(bus_stop_number)
     
     bus_lines = bustimes.getBusLines(bus_routes, bus_data)
-    formatted_bus_lines = format_bus_data(bus_lines)
 
     stdscr.refresh()
 
@@ -55,7 +51,7 @@ def dashboard(stdscr):
     for y in range(height*3):
         stdscr.addch(y, divider_x, curses.ACS_CKBOARD)
     draw_box(weather_win, "Weather", weather_lines)
-    draw_box(bus_win, "Bus Times", formatted_bus_lines)
+    draw_box(bus_win, "Bus Times", bus_lines)
 
     # exit
     while True:

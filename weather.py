@@ -32,7 +32,6 @@ def printData(data):
     print(f"Chance of rain today: {todays_forecast['daily_chance_of_rain']}%")
 
 def getWeatherlines(data):
-    location = data['location']
     forecast_weather = data['forecast']
     forecast = forecast_weather['forecastday'][0]
     todays_forecast = forecast['day']
@@ -47,6 +46,8 @@ def getWeatherlines(data):
     ]
 
 def main():
+
+    # weather args
     parser = argparse.ArgumentParser(description="weather")
     parser.add_argument('api_key', type=str, help='api_key')
     parser.add_argument('post_code', type=str, help='post code')

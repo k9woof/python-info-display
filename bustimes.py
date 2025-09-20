@@ -16,31 +16,7 @@ def testConnection(stop):
     else:
         print(f"Error: {response.status_code}")
 
-#printing bus data
-def printData(routeNumbers, data): 
-    service_rows = []
-
-    #header
-    headers = ["Number", "Destination", "Departure Time"]
-    header_row = f"{headers[0]: <10}{headers[1]:<20}{headers[2]:<15}"
-    print(header_row)
-    print("-" * len(header_row))
-
-    #services
-    for route in data:
-        if route['routeName'] in routeNumbers:
-            for departure in route['departures']:
-                departure_time_unix = departure['departureTimeUnix']
-                departure_time = datetime.fromtimestamp(departure_time_unix)
-                actual_time = departure_time - timedelta(hours = 2)
-                formatted_time= actual_time.strftime('%H:%M')
-                service_rows.append((route['routeName'], departure['destination'], formatted_time))
-
-    service_rows.sort(key=lambda x: x[2]) 
-    for service in service_rows:
-        print(f"{service[0]:<10}{service[1]:<20}{service[2]:<15}")
-
-def getBusLines(routeNumbers, data):
+def bus_lines(data, routeNumbers):
     service_rows = []
     for route in data:
         if route['routeName'] in routeNumbers:
@@ -53,6 +29,25 @@ def getBusLines(routeNumbers, data):
 
     service_rows.sort(key=lambda x: x[2]) 
     return service_rows
+
+#printing bus data
+def printData(routeNumbers, data): 
+    service_rows = []
+
+    #header
+    headers = ["Number", "Destination", "Departure Time"]
+    header_row = f"{headers[0]: <10}{headers[1]:<20}{headers[2]:<15}"
+    print(header_row)
+    print("-" * len(header_row))
+
+    #services
+    service_rows = bus_lines(data, routeNumbers)
+    for service in service_rows:
+        print(f"{service[0]:<10}{service[1]:<20}{service[2]:<15}")
+
+def getBusLines(routeNumbers, data):
+    service_rows = bus_lines(data, routeNumbers)
+    return [f"{route:<10} {destination:<20} {time:<15}" for route, destination, time in service_rows]
 
 def main():
 
