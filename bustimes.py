@@ -6,8 +6,8 @@ import argparse
 import json
 from datetime import datetime, timedelta
 
-#testing connection
-def testConnection(stop):
+# getting bus times
+def get_bus_data(stop):
     url = f'https://tfe-opendata.com/api/v1/live_bus_times/{stop}'
     response = requests.get(url)
     if response.status_code == 200:
@@ -31,7 +31,7 @@ def bus_lines(data, routeNumbers):
     return service_rows
 
 #printing bus data
-def printData(routeNumbers, data): 
+def print_bus_data(routeNumbers, data): 
     service_rows = []
 
     #header
@@ -45,7 +45,7 @@ def printData(routeNumbers, data):
     for service in service_rows:
         print(f"{service[0]:<10}{service[1]:<20}{service[2]:<15}")
 
-def getBusLines(routeNumbers, data):
+def get_bus_lines(routeNumbers, data):
     service_rows = bus_lines(data, routeNumbers)
     return [f"{route:<10} {destination:<20} {time:<15}" for route, destination, time in service_rows]
 
@@ -56,10 +56,10 @@ def main():
     parser.add_argument('stop', type=int, help='bus stop')
     parser.add_argument('services', nargs='+', help='services')
     args = parser.parse_args()
-    data = testConnection(args.stop)
+    data = get_bus_data(args.stop)
 
     if data:
-        printData(args.services, data)
+        print_bus_data(args.services, data)
     else:
         print("Error getting data from TFE API")
 

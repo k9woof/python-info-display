@@ -5,8 +5,8 @@ import requests
 import json
 import argparse
 
-#testing connection
-def testConnection(api_key, post_code):
+# getting weather data
+def get_weather_data(api_key, post_code):
     url = f'http://api.weatherapi.com/v1/forecast.json?key={api_key}&q={post_code}&days=1&aqi=no&alerts=no'
     response = requests.get(url)
     if response.status_code == 200:
@@ -17,7 +17,7 @@ def testConnection(api_key, post_code):
 
 
 # printing current weather
-def printData(data):
+def print_weather_data(data):
     location = data['location']
     forecast_weather = data['forecast']
     forecast = forecast_weather['forecastday'][0]
@@ -31,7 +31,7 @@ def printData(data):
     print(f"Wind speed: {todays_forecast['maxwind_mph']} mph")
     print(f"Chance of rain today: {todays_forecast['daily_chance_of_rain']}%")
 
-def getWeatherlines(data):
+def get_weather_lines(data):
     forecast_weather = data['forecast']
     forecast = forecast_weather['forecastday'][0]
     todays_forecast = forecast['day']
@@ -53,10 +53,10 @@ def main():
     parser.add_argument('post_code', type=str, help='post code')
     args = parser.parse_args()
 
-    data = testConnection(args.api_key, args.post_code)
+    data = get_weather_data(args.api_key, args.post_code)
 
     if data:
-        printData(data)
+        print_weather_data(data)
     else:
         print("Error getting data from the weather API")
 
