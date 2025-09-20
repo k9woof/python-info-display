@@ -9,7 +9,7 @@ import stocks
 import news
 import systeminfo
 import textwrap
-from config import weather_api_key, weather_post_code, stop_number, services, stocks_api_key, symbols
+from config import weather_api_key, weather_post_code, stop_number, services, stocks_api_key
 
 # drawing boxes
 def draw_box(win, title, lines):
@@ -34,7 +34,6 @@ def dashboard(stdscr):
     bus_stop_number = stop_number
     bus_routes = services
     s_api_key = stocks_api_key
-    stock_symbols = symbols
 
     curses.curs_set(0)
     stdscr.clear()
@@ -63,7 +62,7 @@ def dashboard(stdscr):
 
     # stocks box
     stocks_win = curses.newwin(height, 0, width-5, width+5)
-    stocks_data = stocks.get_stocks_data(s_api_key, stock_symbols)
+    stocks_data = stocks.get_stocks_data(s_api_key)
     stocks_lines = stocks.get_stocks_lines(stocks_data)
 
     # news box
@@ -79,10 +78,12 @@ def dashboard(stdscr):
     stdscr.addstr(height*3 ,0, "Press q to exit")
     stdscr.refresh()
 
-    # divider
-    divider_x = width
+    # dividers
+    divider_x, divider_y = width, height
     for y in range(height*3):
         stdscr.addch(y, divider_x, curses.ACS_CKBOARD)
+    for x in range(width*2):
+        stdscr.addch(divider_y, x, curses.ACS_CKBOARD)
 
     # boxes
     draw_box(weather_win, "Weather", weather_lines)

@@ -1,6 +1,8 @@
 # python-info-display
 Morning information to run off of an rpi at login
 
+This is largely for practice at manipulating data from several APIs.
+
 4 basic information scripts which manipulate and display data from 4 apis:
 -bustimes.py 
 -weather.py
