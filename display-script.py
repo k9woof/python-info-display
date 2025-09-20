@@ -9,7 +9,7 @@ import stocks
 import news
 import systeminfo
 import textwrap
-from config import weather_api_key, weather_post_code, stop_number, services, stocks_api_key
+from config import weather_api_key, weather_post_code, stop_number, services, stocks_api_key, symbols
 
 # drawing boxes
 def draw_box(win, title, lines):
@@ -34,6 +34,7 @@ def dashboard(stdscr):
     bus_stop_number = stop_number
     bus_routes = services
     s_api_key = stocks_api_key
+    stock_symbols = symbols
 
     curses.curs_set(0)
     stdscr.clear()
@@ -62,7 +63,7 @@ def dashboard(stdscr):
 
     # stocks box
     stocks_win = curses.newwin(height, 0, width-5, width+5)
-    stocks_data = stocks.get_stocks_data(s_api_key)
+    stocks_data = stocks.get_stocks_data(s_api_key, stock_symbols)
     stocks_lines = stocks.get_stocks_lines(stocks_data)
 
     # news box
