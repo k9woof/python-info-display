@@ -40,6 +40,20 @@ def printData(routeNumbers, data):
     for service in service_rows:
         print(f"{service[0]:<10}{service[1]:<20}{service[2]:<15}")
 
+def getBusLines(routeNumbers, data):
+    service_rows = []
+    for route in data:
+        if route['routeName'] in routeNumbers:
+            for departure in route['departures']:
+                departure_time_unix = departure['departureTimeUnix']
+                departure_time = datetime.fromtimestamp(departure_time_unix)
+                actual_time = departure_time - timedelta(hours = 2)
+                formatted_time= actual_time.strftime('%H:%M')
+                service_rows.append((route['routeName'], departure['destination'], formatted_time))
+
+    service_rows.sort(key=lambda x: x[2]) 
+    return service_rows
+
 def main():
 
     # bus stop & services args

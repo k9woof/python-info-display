@@ -20,4 +20,4 @@ How to run bus-times.py?
 How to run weather.py?
 
 1. In a terminal, navigate to the folder where bus-times.py is. For example if it were in downloads, type cd Downloads.
-2. Then type python3 weather.py api_key post_code (replace api_key & post_code with actual values). e.g python3 bus-times.py (apiKey) 'EH14 4AS'
+2. Then type python3 weather.py api_key post_code (replace api_key & post_code with actual values). e.g python3 bus-times.py apiKey 'EH14 4AS'
