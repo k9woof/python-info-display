@@ -6,6 +6,7 @@ import json
 import argparse
 from newsapi import NewsApiClient
 
+# get bbc-news data from newsapi
 def get_news_data(api_key):
     client = NewsApiClient(api_key)
     if client:
@@ -14,8 +15,9 @@ def get_news_data(api_key):
         )
         return news_data
     else:
-        print("Polygon connection failed")
+        print("NewsAPI connection failed")
 
+# get news headlines as lines
 def get_news_lines(data):
     news_lines = []
     articles = data['articles']
@@ -23,6 +25,7 @@ def get_news_lines(data):
         news_lines.append(article['title'])
     return news_lines
 
+# print bbc-news headlines
 def print_news(data):
     articles = data['articles']
     print("Top BBC-News headlines")

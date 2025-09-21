@@ -16,6 +16,7 @@ def get_bus_data(stop):
     else:
         print(f"Error: {response.status_code}")
 
+# getting bus info as lines
 def bus_lines(data, routeNumbers):
     service_rows = []
     for route in data:

@@ -31,6 +31,7 @@ def print_weather_data(data):
     print(f"Wind speed: {todays_forecast['maxwind_mph']} mph")
     print(f"Chance of rain today: {todays_forecast['daily_chance_of_rain']}%")
 
+# getting weather data as lines
 def get_weather_lines(data):
     forecast_weather = data['forecast']
     forecast = forecast_weather['forecastday'][0]

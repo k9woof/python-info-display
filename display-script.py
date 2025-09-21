@@ -9,7 +9,7 @@ import stocks
 import news
 import systeminfo
 import textwrap
-from config import weather_api_key, weather_post_code, stop_number, services, stocks_api_key, news_api_key
+from config import weather_api_key, weather_post_code, stop_number, services, stocks_api_key, news_api_key, symbols
 
 # drawing boxes
 def draw_box(win, title, lines):
@@ -43,61 +43,49 @@ def dashboard(stdscr):
     curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_CYAN)
 
     height, width = stdscr.getmaxyx()
-    height //=3
-    width //=2
+    row_height = height // 3
+    col_width = width // 2
 
     # weather box   
-    weather_win = curses.newwin(height, width-5, 0, 0)
+    weather_win = curses.newwin(row_height, col_width, 0, 0)
     weather_data = weather.get_weather_data(w_api_key, postcode)
     weather_lines = weather.get_weather_lines(weather_data)
 
     # bus box
-    bus_win = curses.newwin(height, width-5, 0, width+5)
+    bus_win = curses.newwin(row_height, col_width, 0, col_width)
     bus_data = bustimes.get_bus_data(bus_stop_number)
     bus_lines = bustimes.get_bus_lines(bus_routes, bus_data)
 
     # bible-verse box
-    bible_win = curses.newwin(height, width-5, height*2-10, 0)
+    bible_win = curses.newwin(row_height, col_width, row_height, 0)
     bible_verse = dailyverse.get_bible_verse()
     bible_lines = dailyverse.get_bible_lines(bible_verse)
 
     # stocks box
-    stocks_win = curses.newwin(height, 0, width-5, width+5)
+    stocks_win = curses.newwin(row_height, col_width, row_height, col_width)
     stocks_data = stocks.get_stocks_data(s_api_key)
-    stocks_lines = stocks.get_stocks_lines(stocks_data)
+    stocks_lines = stocks.get_stocks_lines(stocks_data, symbols)
 
     # news box
-    news_win = curses.newwin(height, 0, width-5, width+5)
+    news_win = curses.newwin(row_height, col_width, row_height*2, 0)
     news_data = news.get_news_data(n_api_key)
     news_lines = news.get_news_lines(news_data)
 
     # systeminfo box
-    system_info_win = curses.newwin(height, 0, width-5, width+5)
-    system_info_data = systeminfo.get_system_info()
-    system_info_lines = systeminfo.get_system_info_lines(system_info_data)
+    system_info_win = curses.newwin(row_height, col_width, row_height*2, col_width)
+    system_info_lines = systeminfo.get_system_info_lines()
 
-    # favourite bible quote
-    fav_bible_quote_win = curses.newwin(height, 0, width, width)
-    fav_bible_quote = "Hear, O Israel: the LORD our God is one LORD: and thou shalt love the LORD thy God with all thine heart, and with all thy soul, and with all thy might."
-
-    stdscr.addstr(height*3 ,0, "Press q to exit")
+    # exit
+    stdscr.addstr(height -1,0, "Press q to exit")
     stdscr.refresh()
-
-    # dividers
-    divider_x, divider_y = width, height
-    for y in range(height*3):
-        stdscr.addch(y, divider_x, curses.ACS_CKBOARD)
-    for x in range(width*2):
-        stdscr.addch(divider_y, x, curses.ACS_CKBOARD)
 
     # boxes
     draw_box(weather_win, "Weather", weather_lines)
     draw_box(bus_win, "Bus Times", bus_lines)
-    draw_box(bible_win, "Bible-Verse", bible_lines)
+    draw_box(bible_win, "Bible-Verses", bible_lines)
     draw_box(stocks_win, "Stocks", stocks_lines)
     draw_box(news_win, "News", news_lines)
     draw_box(system_info_win, "System Info", system_info_lines)
-    draw_box(fav_bible_quote_win, "Remember this:", fav_bible_quote)
 
     # exit
     while True:
