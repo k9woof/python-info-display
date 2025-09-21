@@ -7,4 +7,11 @@ weather_post_code = ''
 
 # busses config
 stop_number = 
-services = []
+services = ['']
+
+# stocks config
+stocks_api_key = ''
+symbols = ['']
+
+# news config
+news_api_key = ''
